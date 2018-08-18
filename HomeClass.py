@@ -1,5 +1,5 @@
 
-class Home
+class Home:
 	def __init__(self, new_area, new_info,new_addr):
 		self.area = new_area
 		self.info = new_info
@@ -8,10 +8,10 @@ class Home
 		self.contain_items = []
 	def __str__(self):
 		msg = "total area: %d, available area is: %d"%(self.area,self.left_area)
-		msg += "additional info is %s, address is %s"%(self.info,self.addr)
-		msg += "show items: %s"%(str(self.contain_items))
+		msg += "\nadditional info is %s, address is %s"%(self.info,self.addr)
+		msg += "\nshow items: %s"%(str(self.contain_items))
 		return msg
-	def add_item(self,items):
+	def add_item(self,item):
 		self.left_area -= item.get_area()
 		self.contain_items.append(item.get_name())
 
