@@ -21,7 +21,17 @@ class Person(object):
 		if self.gun:
 			return "%s has blood: %d, with gun %s"%(self.name,self.hp,self.gun)
 		else:
-			return "%s has blood: %d, no gun"%(self.name,self.hp,self.gun)
+			if self.hp>0:
+				return "%s has blood: %d, no gun"%(self.name,self.hp)
+			else:
+				return "%s is died" %self.name
+
+	def shoot(self,enemy):
+		"""shoot enemy"""
+		self.gun.shoot(enemy)
+
+	def bloodDrop(self, power):
+		self.hp -= power
 
 
 
@@ -34,6 +44,15 @@ class Gun(object):
 
 	def accept_clip(self,clip_temp):
 		self.clip = clip_temp
+
+	def shoot(self,enemy):
+		# gun shoot
+		bullet_out=self.clip.popOutBullet()
+		if bullet_out:
+			bullet_out.hit(enemy)
+		else:
+			print("empty clip")
+
 
 	def __str__(self):
 		if self.clip:
@@ -52,6 +71,15 @@ class Clip(object):
 		""""add bullet to clip"""
 		self.bullet_list.append(bullet_temp)
 
+	def popOutBullet(self):
+		"""pop out one bullet"""
+		if self.bullet_list:
+			return self.bullet_list.pop()
+		else:
+			return None
+
+
+
 	def __str__(self):
 		return "the info of clip: %d/%d"%(len(self.bullet_list),self.max_num)  # ava/total
 
@@ -61,6 +89,10 @@ class Bullet(object):
 	def __init__(self, power):
 		super(Bullet, self).__init__()
 		self.power = power # power of the bullet
+
+	def hit(self, target):
+		""" targe will lose sth"""
+		target.bloodDrop(self.power)
 
 
 def main():
@@ -96,6 +128,14 @@ def main():
     #test: test tom
     print(Tom)
 
+    #8 create a target person
+    Jerry = Person("Jerry")
+    print(Jerry)
+
+    #9 tom kill jerry
+    for i in range(11):
+	    Tom.shoot(Jerry)
+	    print(Jerry)
 
 
 
