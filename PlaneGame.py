@@ -10,12 +10,38 @@ class HeroPlane(object):
 		self.y = 700
 		self.screen = screen_temp
 		self.image=pygame.image.load("./pic/hero1.png")
+		self.bullet_list = [] #store bullet object
+
 	def display(self):
-		self.screen.blit(self.image,(self.x,self.y))
+		self.screen.blit(self.image, (self.x, self.y))
+
+		for bullet in self.bullet_list:
+			bullet.display()
+			bullet.move()
+
 	def move_left(self):
-		self.x -= 5
+		self.x -= 10
 	def move_right(self):
-		self.x += 5
+		self.x += 10
+
+	def fire(self):
+		self.bullet_list.append(Bullet(self.screen, self.x, self.y))
+
+
+
+class Bullet(object):
+	def __init__(self, screen_temp, x,y):
+		self.x = x+40
+		self.y = y-20
+		self.screen = screen_temp
+		self.image = pygame.image.load("./pic/bullet.png")
+	def display(self):
+		self.screen.blit(self.image, (self.x, self.y))
+	def move(self):
+		self.y-=1
+
+
+
 
 def key_control(hero_temp):
 	#get the event, eg.Press button
@@ -37,8 +63,7 @@ def key_control(hero_temp):
 			#if press space 
 			elif event.key == K_SPACE:
 				print('space')
-
-
+				hero_temp.fire()
 
 
 
@@ -54,8 +79,6 @@ def main():
 	#3. create a plan object
 	hero = HeroPlane(screen)
 
-	x = 210
-	y = 700
 
 	while True:
 
